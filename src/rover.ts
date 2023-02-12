@@ -12,53 +12,37 @@ export function createRover(x: number, y: number, direction: RoverDirection): Ro
     return { x, y, direction };
 }
 
+const turnRightMap: Record<RoverDirection, RoverDirection> = {
+    N: "E",
+    E: "S",
+    S: "W",
+    W: "N"
+} as const;
+
+const turnLeftMap: Record<RoverDirection, RoverDirection> = {
+    N: "W",
+    W: "S",
+    S: "E",
+    E: "N"
+} as const;
+
+const moveMap: Record<string, { x: number, y: number }> = {
+    N: { x: 0, y: 1 },
+    E: { x: 1, y: 0 },
+    S: { x: 0, y: -1 },
+    W: { x: -1, y: 0 }
+} as const;
+
 export function turnRight(rover: Rover) {
-    switch (rover.direction) {
-        case "N":
-            rover.direction = "E";
-            break;
-        case "E":
-            rover.direction = "S";
-            break;
-        case "S":
-            rover.direction = "W";
-            break;
-        case "W":
-            rover.direction = "N";
-            break;
-    }
+    rover.direction = turnRightMap[rover.direction];
 }
 
 export function turnLeft(rover: Rover) {
-    switch (rover.direction) {
-        case "N":
-            rover.direction = "W";
-            break;
-        case "W":
-            rover.direction = "S";
-            break;
-        case "S":
-            rover.direction = "E";
-            break;
-        case "E":
-            rover.direction = "N";
-            break;
-    }
+    rover.direction = turnLeftMap[rover.direction];
 }
 
 export function move(rover: Rover) {
-    switch (rover.direction) {
-        case "N":
-            rover.y += 1;
-            break;
-        case "E":
-            rover.x += 1;
-            break;
-        case "S":
-            rover.y -= 1;
-            break;
-        case "W":
-            rover.x -= 1;
-            break;
-    }
+    const movement = moveMap[rover.direction];
+    rover.x += movement.x;
+    rover.y += movement.y;
 }
