@@ -8,11 +8,11 @@ export interface Rover {
     x: number;
     y: number;
     direction: RoverDirection;
-    inventory?: any[];
+    inventory: any[];
 }
 
 export function createRover(x: number, y: number, direction: RoverDirection, inventory?: any[]): Rover {
-    return { x, y, direction, inventory: inventory || []};
+    return { x, y, direction, inventory: inventory || [] };
 }
 
 const turnRightMap: Record<RoverDirection, RoverDirection> = {
@@ -28,15 +28,6 @@ const turnLeftMap: Record<RoverDirection, RoverDirection> = {
     S: "E",
     E: "N"
 } as const;
-
-// type MoveMap = { [key in RoverDirection]: { x: number, y: number } };
-
-// const moveMap: MoveMap = {
-//     N: { x: 0, y: 1 },
-//     E: { x: 1, y: 0 },
-//     S: { x: 0, y: -1 },
-//     W: { x: -1, y: 0 },
-// };
 
 const moveMap: Record<string, { x: number, y: number }> = {
     N: { x: 0, y: 1 },
@@ -61,4 +52,8 @@ export function move(rover: Rover, plateau: Plateau) {
         rover.x = newX;
         rover.y = newY;
     }
+}
+
+export function addToInventory(rover: Rover, object: any) {
+    rover.inventory.push(object);
 }

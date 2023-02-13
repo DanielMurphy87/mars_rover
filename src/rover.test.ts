@@ -1,4 +1,4 @@
-import { createRover, turnLeft, turnRight, move, Rover } from './rover';
+import { createRover, turnLeft, turnRight, move, Rover, addToInventory } from './rover';
 
 describe('createRover', () => {
     it('creates a new rover object with the correct properties', () => {
@@ -29,5 +29,14 @@ describe('move', () => {
         const plateau = { width: 1, height: 1 };
         move(rover, plateau);
         expect(rover).toEqual({ x: 0, y: 1, direction: 'N', inventory: [] });
+    });
+});
+
+describe('addToInventory', () => {
+    it('adds an object to the inventory of a rover', () => {
+        const rover = createRover(0, 0, 'N');
+        const object = { name: 'rock' };
+        addToInventory(rover, object);
+        expect(rover.inventory).toEqual([object]);
     });
 });
