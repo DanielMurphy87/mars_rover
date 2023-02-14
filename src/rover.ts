@@ -1,6 +1,6 @@
 import { Plateau } from './plateau';
 
-type RoverInstruction = "L" | "R" | "M";
+export type RoverInstruction = "L" | "R" | "M";
 type RoverDirection = "N" | "E" | "S" | "W";
 
 
@@ -8,11 +8,11 @@ export interface Rover {
     x: number;
     y: number;
     direction: RoverDirection;
-    inventory: any[];
+    inventory: MartianObject[];
 }
 
-export function createRover(x: number, y: number, direction: RoverDirection, inventory?: any[]): Rover {
-    return { x, y, direction, inventory: inventory || [] };
+export function createRover(x: number, y: number, direction: RoverDirection, inventory: MartianObject[] = []): Rover {
+    return { x, y, direction, inventory };
 }
 
 const turnRightMap: Record<RoverDirection, RoverDirection> = {
@@ -36,6 +36,12 @@ const moveMap: Record<string, { x: number, y: number }> = {
     W: { x: -1, y: 0 }
 } as const;
 
+type MartianObject = {
+    name: string;
+    weight: number;
+    size: number;
+}
+
 export function turnRight(rover: Rover) {
     rover.direction = turnRightMap[rover.direction];
 }
@@ -56,4 +62,37 @@ export function move(rover: Rover, plateau: Plateau) {
 
 export function addToInventory(rover: Rover, object: any) {
     rover.inventory.push(object);
+}
+
+export function performActions(rover: Rover, plateau: Plateau, actions: RoverInstruction[]) {
+    for (let action of actions) {
+        switch (action) {
+            case "L":
+                turnLeft(rover);
+                break;
+            case "R":
+                turnRight(rover);
+                break;
+            case "M":
+                move(rover, plateau);
+                break;
+        }
+    }
+    console.log(rover.x, rover.y, rover.direction);
+}
+
+export function convertStringToRoverInstructions(actions: string): RoverInstruction[] {
+    const result: RoverInstruction[] = [];
+    for (let action of actions) {
+        switch (action) {
+            case "L":
+            case "R":
+            case "M":
+                result.push(action);
+                break;
+            default:
+                break;
+        }
+    }
+    return result;
 }
