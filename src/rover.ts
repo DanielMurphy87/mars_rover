@@ -1,6 +1,6 @@
 import { Plateau } from './plateau';
 
-export type RoverInstruction = "L" | "R" | "M";
+export type RoverInstruction = "L" | "R" | "M" | "A";
 type RoverDirection = "N" | "E" | "S" | "W";
 
 
@@ -29,7 +29,7 @@ const turnLeftMap: Record<RoverDirection, RoverDirection> = {
     E: "N"
 } as const;
 
-const moveMap: Record<string, { x: number, y: number }> = {
+const moveMap: Record<RoverDirection, { x: number, y: number }> = {
     N: { x: 0, y: 1 },
     E: { x: 1, y: 0 },
     S: { x: 0, y: -1 },
@@ -57,14 +57,20 @@ export function move(rover: Rover, plateau: Plateau) {
     if (newX >= 0 && newX <= plateau.width && newY >= 0 && newY <= plateau.height) {
         rover.x = newX;
         rover.y = newY;
+    } else {
+        console.error(`Rover went out of bounds of the plateau. Final position: ${rover.x} ${rover.y} ${rover.direction}`);
+        return false;
     }
 }
 
-export function addToInventory(rover: Rover, object: any) {
+export function addToInventory(rover: Rover, object: MartianObject) {
     rover.inventory.push(object);
 }
 
-export function performActions(rover: Rover, plateau: Plateau, actions: RoverInstruction[]) {
+export function performActions(rover: Rover, plateau: Plateau, actions: RoverInstruction[] | string) {
+    if (typeof actions === "string") {
+        actions = convertStringToRoverInstructions(actions.toUpperCase());
+    }
     for (let action of actions) {
         switch (action) {
             case "L":
@@ -74,25 +80,24 @@ export function performActions(rover: Rover, plateau: Plateau, actions: RoverIns
                 turnRight(rover);
                 break;
             case "M":
-                move(rover, plateau);
+                if (move(rover, plateau)) {
+                    return false;
+                }
+                break;
+            case "A":
+                const object = findMartianObject();
+                console.log(`Found ${object.name}!`)
+                addToInventory(rover, object);
                 break;
         }
     }
-    console.log(rover.x, rover.y, rover.direction);
+    // console.log(rover.x, rover.y, rover.direction);
 }
 
 export function convertStringToRoverInstructions(actions: string): RoverInstruction[] {
-    const result: RoverInstruction[] = [];
-    for (let action of actions) {
-        switch (action) {
-            case "L":
-            case "R":
-            case "M":
-                result.push(action);
-                break;
-            default:
-                break;
-        }
-    }
-    return result;
+    return actions.split("").filter(action => ["L", "R", "M", "A"].includes(action)) as RoverInstruction[];
+}
+
+export function findMartianObject(): MartianObject {
+    return { name: "Martian rock", weight: 10, size: 5 };
 }
