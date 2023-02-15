@@ -1,42 +1,54 @@
-import { createRover, turnLeft, turnRight, move, Rover, addToInventory } from './rover';
+import { createRover, turnLeft, turnRight, move, Rover, addToInventory, performActions } from './rover';
 
 describe('createRover', () => {
-    it('creates a new rover object with the correct properties', () => {
+    test('creates a new rover object with the correct properties', () => {
         const rover = createRover(1, 2, 'N');
         expect(rover).toEqual({ x: 1, y: 2, direction: 'N', inventory: [] });
     });
 });
 
-describe('turnLeft', () => {
-    it('turns the rover to the left correctly', () => {
-        const rover = createRover(0, 0, 'N');
-        turnLeft(rover);
-        expect(rover).toEqual({ x: 0, y: 0, direction: 'W', inventory: [] });
-    });
-});
+describe('performActions', () => {
+    const plateau = { width: 5, height: 5 };
 
-describe('turnRight', () => {
-    it('turns the rover to the right correctly', () => {
-        const rover = createRover(0, 0, 'N');
-        turnRight(rover);
-        expect(rover).toEqual({ x: 0, y: 0, direction: 'E', inventory: [] });
+    test('performs left turn', () => {
+        const rover = createRover(2, 3, 'N', []);
+        performActions(rover, plateau, 'L');
+        expect(rover.direction).toBe('W');
     });
-});
 
-describe('move', () => {
-    it('moves the rover in the correct direction', () => {
-        const rover = createRover(0, 0, 'N');
-        const plateau = { width: 1, height: 1 };
-        move(rover, plateau);
-        expect(rover).toEqual({ x: 0, y: 1, direction: 'N', inventory: [] });
+    test('performs right turn', () => {
+        const rover = createRover(2, 3, 'N', []);
+        performActions(rover, plateau, 'R');
+        expect(rover.direction).toBe('E');
     });
-});
 
-describe('addToInventory', () => {
-    it('adds an object to the inventory of a rover', () => {
-        const rover = createRover(0, 0, 'N');
-        const object = { name: 'rock' };
-        addToInventory(rover, object);
-        expect(rover.inventory).toEqual([object]);
+    test('moves north', () => {
+        const rover = createRover(2, 3, 'N', []);
+        performActions(rover, plateau, 'M');
+        expect(rover.y).toBe(4);
+    });
+
+    test('moves south', () => {
+        const rover = createRover(2, 3, 'S', []);
+        performActions(rover, plateau, 'M');
+        expect(rover.y).toBe(2);
+    });
+
+    test('moves east', () => {
+        const rover = createRover(2, 3, 'E', []);
+        performActions(rover, plateau, 'M');
+        expect(rover.x).toBe(3);
+    });
+
+    test('moves west', () => {
+        const rover = createRover(2, 3, 'W', []);
+        performActions(rover, plateau, 'M');
+        expect(rover.x).toBe(1);
+    });
+
+    test('ignores move command that would take the rover out of bounds', () => {
+        const rover = createRover(0, 0, 'S', []);
+        performActions(rover, plateau, 'M');
+        expect(rover.y).toBe(0);
     });
 });

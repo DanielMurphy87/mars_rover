@@ -12,7 +12,7 @@ export function createPlateau(width: number, height: number): Plateau {
     return { width, height };
 }
 
-const isWithinBounds = (plateau: Plateau, coordinate: Coordinate): boolean => {
+export function isWithinBounds(plateau: Plateau, coordinate: Coordinate): boolean {
     return (
         coordinate.x >= 0 &&
         coordinate.x <= plateau.width &&
@@ -20,4 +20,3 @@ const isWithinBounds = (plateau: Plateau, coordinate: Coordinate): boolean => {
         coordinate.y <= plateau.height
     );
 };
-
