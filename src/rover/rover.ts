@@ -57,6 +57,7 @@ export function move(rover: Rover, plateau: Plateau) {
     if (newX >= 0 && newX <= plateau.width && newY >= 0 && newY <= plateau.height) {
         rover.x = newX;
         rover.y = newY;
+        return true;
     } else {
         console.error(`Rover went out of bounds of the plateau. Final position: ${rover.x} ${rover.y} ${rover.direction}`);
         return false;
@@ -91,11 +92,10 @@ export function performActions(rover: Rover, plateau: Plateau, actions: RoverIns
                 break;
         }
     }
-    // console.log(rover.x, rover.y, rover.direction);
 }
 
 export function convertStringToRoverInstructions(actions: string): RoverInstruction[] {
-    return actions.split("").filter(action => ["L", "R", "M", "A"].includes(action)) as RoverInstruction[];
+    return actions.toUpperCase().split("").filter(action => ["L", "R", "M", "A"].includes(action)) as RoverInstruction[];
 }
 
 export function findMartianObject(): MartianObject {
