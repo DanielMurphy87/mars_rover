@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc  --project tsconfig.build.json",
     "start": "nodemon src/index.ts",
-    "test": "jest"
+    "test": "jest src/plateau/ src/rover/"
   },
   "repository": {
     "type": "git",

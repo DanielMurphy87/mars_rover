@@ -1,4 +1,4 @@
-import { Plateau } from './plateau';
+import { Plateau } from "../plateau/plateau";
 
 export type RoverInstruction = "L" | "R" | "M" | "A";
 type RoverDirection = "N" | "E" | "S" | "W";

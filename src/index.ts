@@ -1,44 +1,6 @@
-// import { Rover, createRover, performActions } from "./rover";
-// import { createPlateau } from './plateau';
-
-// const rovers: Rover[] = [];
-
-// // const rover1 = createRover(1, 2, "N");
-
-// const plateau = createPlateau(10, 5);
-// // rovers.push(rover1);
-
-// // const actions1 = "LMLMLMLMM";
-// // for (let action of actions1) {
-// //     switch (action) {
-// //         case "L":
-// //             turnLeft(rover1);
-// //             break;
-// //         case "R":
-// //             turnRight(rover1);
-// //             break;
-// //         case "M":
-// //             move(rover1, plateau);
-// //             break;
-// //     }
-// // }
-
-// let rover2 = createRover(1, 1, "N");
-// rovers.push(rover2);
-
-// // console.log(plateau);
-// const actions2 = "RAMMMMMMMMMM";
-
-// for (let rover of rovers) {
-//     performActions(rover, plateau, actions2);
-//     console.log(plateau);
-//     console.log(`Final position: ${rover.x} ${rover.y} ${rover.direction}`);
-//     console.table(rover.inventory);
-// }
-
 import readline from 'readline';
-import { createPlateau } from './plateau';
-import { createRover, performActions, Rover, RoverInstruction } from './rover';
+import { createPlateau } from './plateau/plateau';
+import { createRover, performActions, Rover, RoverInstruction } from './rover/rover';
 
 const rl = readline.createInterface({
     input: process.stdin,

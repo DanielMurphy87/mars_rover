@@ -1,4 +1,4 @@
-import { createRover, turnLeft, turnRight, move, Rover, addToInventory, performActions } from './rover';
+import { createRover, performActions } from './rover';
 
 describe('createRover', () => {
     test('creates a new rover object with the correct properties', () => {
